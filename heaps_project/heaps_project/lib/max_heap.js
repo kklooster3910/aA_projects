@@ -31,6 +31,9 @@ class MaxHeap {
   }
 
   deleteMax() {
+    // if (this.array[0] === null) return null;
+    // if (this.array.length === 2) return this.array.pop();
+
     let max = this.array[1];
     this.array[1] = this.array.pop();
     this.siftDown(1);
@@ -41,10 +44,23 @@ class MaxHeap {
     let leftIndex = this.getLeftChild(idx);
     let rightIndex = this.getRightChild(idx);
     let tempArray = this.array;
-    leftVal = this.array[leftIndex];
-    rightVal = this.array[rightIndex];
+    let leftVal = tempArray[leftIndex];
+    let rightVal = tempArray[rightIndex];
+    let currentNode = tempArray[idx]
 
+    if (leftVal === undefined) leftVal = -Infinity;
+    if (rightVal === undefined) rightVal = -Infinity;
     
+    if (currentNode > leftVal && currentNode > rightVal) return;
+
+    let swapIdx;
+    if (leftVal > rightVal) {
+      swapIdx = leftIndex;
+    } else {
+      swapIdx = rightIndex;
+    }
+    [ tempArray[swapIdx], tempArray[idx] ] = [ tempArray[idx], tempArray[swapIdx] ]
+    this.siftDown(swapIdx)
   }
 
 }
@@ -53,9 +69,13 @@ let heap = new MaxHeap();
 heap.insert(42);
 heap.insert(32);
 heap.insert(24);
-console.log(heap.array)
+// console.log(heap.array)
 heap.insert(100);
-console.log(heap.array)
+heap.insert(50);
+heap.insert(27);
+console.log(heap.array);
+console.log(heap.deleteMax());
+console.log(heap.array);
 // [null, 43, 27, 13, 24]
 
 module.exports = {
